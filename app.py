@@ -10,7 +10,14 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    profile = {}
+    if "username" in session:
+        rows = db.query(
+            "SELECT club, favorite_course FROM users WHERE username = ?",[session["username"]],)
+        if rows:
+            club, favorite_course = rows[0]
+            profile = {"club": club, "favorite_course": favorite_course}
+    return render_template("index.html", profile = profile)
 
 @app.route("/register")
 def register():
@@ -33,7 +40,7 @@ def create():
     except sqlite3.IntegrityError:
         return "Error: Username is already taken"
 
-    return "Account created"
+    return redirect("/")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -57,4 +64,17 @@ def login():
 def logout():
     session.clear()
     flash("You are logged out")
+    return redirect("/")    
+
+@app.route("/update_profile", methods=["POST"])
+def update_profile():
+    club = request.form["club"]
+    favorite = request.form["favorite_course"]
+    row = db.query(
+            "SELECT id FROM users WHERE username = ?",[session["username"]])
+    user_id = row[0][0]
+    print(user_id)
+
+    db.execute("UPDATE users SET club = ?, favorite_course = ? WHERE id = ?",
+    [club if club else None, favorite if favorite else None, user_id])
     return redirect("/")

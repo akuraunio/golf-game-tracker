@@ -12,6 +12,18 @@
   <p>
     <a href="/logout">Log out</a>
   </p>
+  <details>
+      <summary>Update profile</summary>
+      <form action="/update_profile" method="post">
+        <label>Your golf club<br>
+          <input type="text" name="club" value="{{ profile.get('club', '') }}">
+        </label><br><br>
+        <label>Your favorite course<br>
+          <input type="text" name="favorite_course" value="{{ profile.get('favorite_course', '') }}">
+        </label><br><br>
+        <button type="submit">Save</button>
+      </form>
+    </details>
   {% else %}
   <form action="/login" method="post">
     <p>
@@ -24,6 +36,9 @@
     </p>
     <input type="submit" value="Log in" />
   </form>
+  <p>
+    <a href="/register">Create a profile</a>
+  </p>
   {% endif %}
 </body>
 </html>
