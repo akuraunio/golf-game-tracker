@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect, request, session
+from flask import render_template, redirect, request, session, flash
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
@@ -52,3 +52,9 @@ def login():
         return redirect("/")
     else:
         return "Wrong username or password"
+    
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("You are logged out")
+    return redirect("/")
