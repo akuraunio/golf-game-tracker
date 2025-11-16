@@ -34,6 +34,25 @@
         <button type="submit">Save</button>
       </form>
     </details>
+    <p>
+    <a href="/add_round_page">Add a golf round</a>
+    </p>
+    {% if rounds %}
+    <h2>Rounds played</h2>
+    <ul>
+        {% for r in rounds %}
+        <li>
+            <p>{{ r.played_date }}</p>
+            <p>{{ r.course }}</p>
+            <p>{{ r.played_tee }}</p>
+            <p>{{ r.played_strokes }}</p>
+            <p>{{ r.holes }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No rounds played</p>
+    {% endif %}
   {% else %}
   <form action="/login" method="post">
     <p>

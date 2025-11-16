@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add a round</title>
+</head>
+
+<body>
+<h1>Add a round of golf played</h1>
+<form action="/add_round" method="post">
+    <p>
+      Course: <br />
+      <input type="text" name="course" required/>
+    </p>
+    <p>
+      Date: <br />
+      <input type="date" name="played_date" required/>
+    </p>
+    <p>
+      Tee: <br />
+      <select name="tee" required>
+          <option value="White">White</option>
+          <option value="Yellow">Yellow</option>
+          <option value="Red">Red</option>
+       </select>
+    </p>
+    <p>
+      Holes: <br />
+      <select name="holes" required>
+          <option value="18">18</option>
+          <option value="9">9</option>
+      </select>
+    </p>
+    <p>
+      Strokes: <br />
+      <input type="number" name="strokes" required/>
+    </p>
+    <input type="submit" value="Submit round" />
+  </form>
+</body>
+</html>

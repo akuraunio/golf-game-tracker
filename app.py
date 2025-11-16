@@ -17,7 +17,16 @@ def index():
         if rows:
             club, favorite_course = rows[0]
             profile = {"club": club, "favorite_course": favorite_course}
-    return render_template("index.html", profile = profile)
+        user_id = db.query(
+            "SELECT id FROM users WHERE username = ?",[session["username"]])
+        user_id = user_id[0][0]
+        rows = db.query(
+            "SELECT course, played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",[user_id],)
+        if rows:
+            rounds = rows
+        else:
+            rounds = None
+    return render_template("index.html", profile = profile, rounds = rounds)
 
 @app.route("/register")
 def register():
@@ -76,8 +85,27 @@ def update_profile():
     row = db.query(
             "SELECT id FROM users WHERE username = ?",[session["username"]])
     user_id = row[0][0]
-    print(user_id)
-
     db.execute("UPDATE users SET club = ?, favorite_course = ? WHERE id = ?",
     [club if club else None, favorite if favorite else None, user_id])
     return redirect("/")
+
+@app.route("/add_round_page")
+def add_round_page():
+    return render_template("add_round_page.html")
+
+@app.route("/add_round", methods=["POST"])
+def add_round():
+    course = request.form["course"]
+    played_date = request.form["played_date"]
+    tee = request.form["tee"]
+    holes = request.form["holes"]
+    strokes = request.form["strokes"]
+
+    user_id = db.query(
+            "SELECT id FROM users WHERE username = ?",[session["username"]])
+    user_id = user_id[0][0]
+
+    sql = "INSERT INTO rounds (user_id, course, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?, ?)"
+    db.execute(sql, [user_id, course, played_date, tee, strokes, holes])
+    return redirect("/")
+
