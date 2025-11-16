@@ -10,4 +10,10 @@ Application functionalities
 * The application displays handicap and some historical data like high score, number of pars and birdies etc. in viable format to the user
 * For further development, if the scope of this application allows, some things that can be added: a tournament category could be added to identify tournament rounds, practice sessions on the range or simulator that can be broken down to iron/driver/putting etc. or generic scorecards that all users can use
 ---
-The application can be used by cloning the directory, creating the database from the schema.sql file and running the flask app.
+## Using the application
+* Install flask
+* Run initialize_database.py to setup the database
+* Start the application with
+'''
+flask run
+'''
