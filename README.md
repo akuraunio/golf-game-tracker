@@ -14,6 +14,6 @@ Application functionalities
 * Install flask
 * Run initialize_database.py to setup the database
 * Start the application with
-'''
+```
 flask run
-'''
+```
