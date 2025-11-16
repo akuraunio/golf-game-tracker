@@ -29,9 +29,11 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if len(password1) < 4:
-        return "Error: Password needs to be atleast 4 characters"
-    if password1 != password2:
-        return "Error: passwords do not match"
+        flash("Error: Password needs to be atleast 4 characters")
+        return redirect("/register")
+    elif password1 != password2:
+        flash("Error: passwords do not match")
+        return redirect("/register")
     password_hash = generate_password_hash(password1)
 
     try:
@@ -40,6 +42,7 @@ def create():
     except sqlite3.IntegrityError:
         return "Error: Username is already taken"
 
+    flash("Registration successful! You can login now")
     return redirect("/")
 
 @app.route("/login", methods=["POST", "GET"])

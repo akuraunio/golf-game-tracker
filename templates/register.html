@@ -5,6 +5,16 @@
   <title>Registration page</title>
 </head>
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
 <body>
   <h1>Create a username and password to register</h1>
   <form action="/create_user" method="post">
