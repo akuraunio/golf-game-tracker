@@ -12,7 +12,13 @@ Application functionalities
 ---
 ## Using the application
 * Install flask
+```
+pip install flask
+```
 * Run initialize_database.py to setup the database
+```
+python initialize_database.py
+```
 * Start the application with
 ```
 flask run
