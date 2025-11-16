@@ -4,6 +4,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
+from search_course import search_course
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -108,4 +109,10 @@ def add_round():
     sql = "INSERT INTO rounds (user_id, course, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?, ?)"
     db.execute(sql, [user_id, course, played_date, tee, strokes, holes])
     return redirect("/")
+
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    results = search_course(query) if query else []
+    return render_template("search.html", query=query, results=results)
 

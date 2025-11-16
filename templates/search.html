@@ -1,0 +1,16 @@
+  {% if query %}
+  <hr />
+  <h2>Search results</h2>
+  
+  <ul>
+    {% for r in results %}
+    <li>
+        <p>{{ r.played_date }}</p>
+        <p>{{ r.course }}</p>
+        <p>{{ r.played_tee }}</p>
+        <p>{{ r.played_strokes }}</p>
+        <p>{{ r.holes }}</p>
+    </li>
+    {% endfor %}
+    </ul>
+  {% endif %}

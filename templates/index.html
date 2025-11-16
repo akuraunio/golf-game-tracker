@@ -37,6 +37,17 @@
     <p>
     <a href="/add_round_page">Add a golf round</a>
     </p>
+    <form action="/search" method="get">
+        <p>
+          Course name:
+          {% if query %}
+          <input type="text" name="query" value="{{ query }}" />
+          {% else %}
+          <input type="text" name="query" />
+          {% endif %}
+        </p>
+    <input type="submit" value="Search" />
+    </form>
     {% if rounds %}
     <h2>Rounds played</h2>
     <ul>
