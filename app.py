@@ -49,6 +49,7 @@ def create():
     password2 = request.form["password2"]
     club = request.form["club"]
     favorite_course = request.form["favorite_course"]
+    handicap = 54  # initial handicap is always 54
     if len(password1) < 4:
         flash("Error: Password needs to be atleast 4 characters")
         return redirect("/register")
@@ -58,8 +59,8 @@ def create():
     password_hash = generate_password_hash(password1)
 
     try:
-        sql = "INSERT INTO users (username, password_hash, club, favorite_course) VALUES (?, ?, ?, ?)"
-        db.execute(sql, [username, password_hash, club, favorite_course])
+        sql = "INSERT INTO users (username, password_hash, club, favorite_course, handicap) VALUES (?, ?, ?, ?, ?)"
+        db.execute(sql, [username, password_hash, club, favorite_course, handicap])
     except sqlite3.IntegrityError:
         return "Error: Username is already taken"
 

@@ -7,3 +7,11 @@ table {
   table-layout: fixed;
   width: 50%;
 }
+
+.button {
+  background-color: tomato;
+  color: black;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: 0;
+}

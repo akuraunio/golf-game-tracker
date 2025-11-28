@@ -1,94 +1,81 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Login page</title>
-    <link rel="stylesheet" href="static/styles.css" />
-  </head>
-
-  {% with messages = get_flashed_messages() %} {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} {% endwith %}
-
-  <body>
-    {% if session.username %}
-    <p>You are logged in as {{ session.username }}</p>
-    <p>
-      <a href="/logout">Log out</a>
-    </p>
-    <details>
-      <summary>Update profile</summary>
-      <form action="/update_profile" method="post">
-        <label
-          >Your golf club<br />
-          <input type="text" name="club" value="{{ profile.get('club', '') }}" /> </label
-        ><br /><br />
-        <label
-          >Your favorite course<br />
-          <input
-            type="text"
-            name="favorite_course"
-            value="{{ profile.get('favorite_course', '') }}" /> </label
-        ><br /><br />
-        <button type="submit">Save</button>
-      </form>
-    </details>
-    <p>
-      <a href="/add_round_page">Add a golf round</a>
-    </p>
-    <form action="/search" method="get">
-      <p>
-        Course name: {% if query %}
-        <input type="text" name="query" value="{{ query }}" />
-        {% else %}
-        <input type="text" name="query" />
-        {% endif %}
-      </p>
-      <input type="submit" value="Search" />
-    </form>
-    {% if rounds %}
-    <h2>Rounds played</h2>
-    <table>
-      <tr>
-        <th>Course</th>
-        <th>Date</th>
-        <th>Holes</th>
-        <th>Tee</th>
-        <th>Strokes</th>
-      </tr>
-      {% for r in rounds %}
-      <tr>
-        <td>{{ r.course }}</td>
-        <td>{{ r.played_date }}</td>
-        <td>{{ r.holes }}</td>
-        <td>{{ r.played_tee }}</td>
-        <td>{{ r.played_strokes }}</td>
-        <td>
-          <a href="/delete/{{ r.id }}">Delete round</a> <a href="/edit/{{ r.id }}">Edit round</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+{% extends "base.html" %} {% block title %}Login page{% endblock %} {% block content %} {% with
+messages = get_flashed_messages() %} {% if messages %}
+<ul>
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endwith %} {% if session.username %}
+<p>You are logged in as {{ session.username }}</p>
+<p>
+  <a href="/logout">Log out</a>
+</p>
+<details>
+  <summary>Update profile</summary>
+  <form action="/update_profile" method="post">
+    <label
+      >Your golf club<br />
+      <input type="text" name="club" value="{{ profile.get('club', '') }}" /> </label
+    ><br /><br />
+    <label
+      >Your favorite course<br />
+      <input
+        type="text"
+        name="favorite_course"
+        value="{{ profile.get('favorite_course', '') }}" /> </label
+    ><br /><br />
+    <button type="submit">Save</button>
+  </form>
+</details>
+<p>
+  <a href="/add_round_page">Add a golf round</a>
+</p>
+<form action="/search" method="get">
+  <p>
+    Course name: {% if query %}
+    <input type="text" name="query" value="{{ query }}" />
     {% else %}
-    <p>No rounds played</p>
-    {% endif %} {% else %}
-    <form action="/login" method="post">
-      <p>
-        Username: <br />
-        <input type="text" name="username" />
-      </p>
-      <p>
-        Password: <br />
-        <input type="password" name="password" />
-      </p>
-      <input type="submit" value="Log in" />
-    </form>
-    <p>
-      <a href="/register">Create a profile</a>
-    </p>
+    <input type="text" name="query" />
     {% endif %}
-  </body>
-</html>
+  </p>
+  <input type="submit" value="Search" />
+</form>
+{% if rounds %}
+<h2>Rounds played</h2>
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Date</th>
+    <th>Holes</th>
+    <th>Tee</th>
+    <th>Strokes</th>
+  </tr>
+  {% for r in rounds %}
+  <tr>
+    <td>{{ r.course }}</td>
+    <td>{{ r.played_date }}</td>
+    <td>{{ r.holes }}</td>
+    <td>{{ r.played_tee }}</td>
+    <td>{{ r.played_strokes }}</td>
+    <td><a href="/delete/{{ r.id }}">Delete round</a> <a href="/edit/{{ r.id }}">Edit round</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No rounds played</p>
+{% endif %} {% else %}
+<form action="/login" method="post">
+  <p>
+    Username: <br />
+    <input type="text" name="username" />
+  </p>
+  <p>
+    Password: <br />
+    <input type="password" name="password" />
+  </p>
+  <input type="submit" value="Log in" />
+</form>
+<p>
+  <a href="/register">Create a profile</a>
+</p>
+{% endif %} {% endblock %}

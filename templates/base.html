@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="static/styles.css" />
+  </head>
+
+  <body>
+    <div class="topnav">
+      {% if session.username %}
+      <p>
+        You are logged in as {{ session.username }}
+        <a href="/logout" class="button">Log out</a>
+      </p>
+
+      {% else %}
+      <p>Login or create a profile</p>
+      {% endif %}
+      <p>
+        <a href="/">Index page</a>
+        <a href="/">Leaderboards</a>
+      </p>
+    </div>
+
+    <div>{% block content %}{% endblock %}</div>
+  </body>
+</html>
