@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Registration page</title>
+  </head>
 
-<head>
-  <title>Registration page</title>
-</head>
+  {% with messages = get_flashed_messages() %} {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% endwith %}
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-
-<body>
-  <h1>Create a username and password to register</h1>
-  <form action="/create_user" method="post">
-    <p>
-      Username: <br />
-      <input type="text" name="username" />
-    </p>
-    <p>
-      Password: <br />
-      <input type="password" name="password1" />
-    </p>
-    <p>
-      Retype password: <br />
-      <input type="password" name="password2" />
-    </p>
-    <input type="submit" value="Create account" />
-  </form>
-</body>
-
+  <body>
+    <h1>Create a username and password to register</h1>
+    <form action="/create_user" method="post">
+      <p>
+        Username: * <br />
+        <input type="text" name="username" required />
+      </p>
+      <p>
+        Password: * <br />
+        <input type="password" name="password1" required />
+      </p>
+      <p>
+        Retype password: * <br />
+        <input type="password" name="password2" required />
+      </p>
+      <label
+        >Your golf club<br />
+        <input type="text" name="club" /> </label
+      ><br /><br />
+      <label
+        >Your favorite course<br />
+        <input type="text" name="favorite_course" /> </label
+      ><br /><br />
+      <input type="submit" value="Create account" />
+    </form>
+  </body>
 </html>

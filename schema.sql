@@ -6,6 +6,10 @@ CREATE TABLE users (
     favorite_course TEXT
 );
 
+CREATE TABLE courses (
+    id INTEGER PRIMARY KEY
+);
+
 CREATE TABLE rounds (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -13,5 +17,6 @@ CREATE TABLE rounds (
     played_date TEXT NOT NULL,
     played_tee TEXT NOT NULL,
     played_strokes TEXT NOT NULL,
-    holes INTEGER NOT NULL
+    holes INTEGER NOT NULL,
+    par INTEGER NOT NULL
 );
