@@ -1,0 +1,9 @@
+th,
+td {
+  text-align: left;
+}
+
+table {
+  table-layout: fixed;
+  width: 50%;
+}
