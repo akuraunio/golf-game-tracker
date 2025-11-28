@@ -8,16 +8,18 @@ CREATE TABLE users (
 );
 
 CREATE TABLE courses (
-    id INTEGER PRIMARY KEY
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    name TEXT NOT NULL,
+    par INTEGER NOT NULL
 );
 
 CREATE TABLE rounds (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
-    course TEXT NOT NULL,
+    course_ID INTEGER REFERENCES courses(id),
     played_date TEXT NOT NULL,
     played_tee TEXT NOT NULL,
     played_strokes TEXT NOT NULL,
-    holes INTEGER NOT NULL,
-    par INTEGER NOT NULL
+    holes INTEGER NOT NULL
 );

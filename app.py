@@ -133,3 +133,20 @@ def search():
     query = request.args.get("query")
     results = search_course(query) if query else []
     return render_template("search.html", query=query, results=results)
+
+
+@app.route("/profile/<username>")
+def profile(username):
+    user_info = db.query(
+        "SELECT club, favorite_course, handicap FROM users WHERE username = ?",
+        [username],
+    )
+
+    club, favorite_course, handicap = user_info[0]
+    return render_template(
+        "profile.html",
+        username=username,
+        club=club,
+        favorite_course=favorite_course,
+        handicap=handicap,
+    )
