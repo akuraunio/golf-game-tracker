@@ -10,7 +10,7 @@ CREATE TABLE users (
 CREATE TABLE courses (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     par INTEGER NOT NULL
 );
 

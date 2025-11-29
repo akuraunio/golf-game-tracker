@@ -62,7 +62,27 @@ messages = get_flashed_messages() %} {% if messages %}
   {% endfor %}
 </table>
 {% else %}
-<p>No rounds played</p>
+<p>No rounds played. Add a course or search for courses added by others to play a round</p>
+{% endif %}
+<h2>Your courses</h2>
+{% if courses %}
+<table>
+  <tr>
+    <th>Course name</th>
+    <th>Par</th>
+  </tr>
+  {% for c in courses %}
+  <tr>
+    <td>{{ c.name }}</td>
+    <td>{{ c.par }}</td>
+    <td>
+      <a href="/delete/{{ c.id }}">Delete course</a> <a href="/edit/{{ c.id }}">Edit course</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>You have not added courses. You can add a course or play rounds on courses added by others</p>
 {% endif %} {% else %}
 <form action="/login" method="post">
   <p>

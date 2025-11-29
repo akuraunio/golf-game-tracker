@@ -14,6 +14,7 @@ app.secret_key = config.secret_key
 def index():
     profile = {}
     rounds = None
+    courses = None
     if "username" in session:
         rows = db.query(
             "SELECT club, favorite_course FROM users WHERE username = ?",
@@ -27,14 +28,25 @@ def index():
         )
         user_id = user_id[0][0]
         rows = db.query(
-            "SELECT course, played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
+            "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
             [user_id],
         )
         if rows:
             rounds = rows
         else:
             rounds = None
-    return render_template("index.html", profile=profile, rounds=rounds)
+        rows = db.query(
+            "SELECT name, par FROM courses WHERE user_id = ?",
+            [user_id],
+        )
+        if rows:
+            courses = rows
+        else:
+            courses = None
+
+    return render_template(
+        "index.html", profile=profile, rounds=rounds, courses=courses
+    )
 
 
 @app.route("/register")
@@ -113,18 +125,16 @@ def add_round_page():
 
 @app.route("/add_round", methods=["POST"])
 def add_round():
-    course = request.form["course"]
     played_date = request.form["played_date"]
     tee = request.form["tee"]
     holes = request.form["holes"]
     strokes = request.form["strokes"]
-    par = request.form["par"]
 
     user_id = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])
     user_id = user_id[0][0]
 
-    sql = "INSERT INTO rounds (user_id, course, played_date, played_tee, played_strokes, holes, par) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    db.execute(sql, [user_id, course, played_date, tee, strokes, holes, par])
+    sql = "INSERT INTO rounds (user_id, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?)"
+    db.execute(sql, [user_id, played_date, tee, strokes, holes])
     return redirect("/")
 
 
