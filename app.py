@@ -36,7 +36,7 @@ def index():
         else:
             rounds = None
         rows = db.query(
-            "SELECT name, par FROM courses WHERE user_id = ?",
+            "SELECT id, name, par FROM courses WHERE user_id = ?",
             [user_id],
         )
         if rows:
@@ -123,18 +123,38 @@ def add_round_page():
     return render_template("add_round_page.html")
 
 
-@app.route("/add_round", methods=["POST"])
-def add_round():
+@app.route("/add_round/<int:course_id>", methods=["GET", "POST"])
+def add_round(course_id):
+    if request.method == "GET":
+        course = db.query("SELECT name FROM Courses WHERE id = ?", [course_id])
+        course_name = course[0][0]
+        return render_template(
+            "add_round.html", course_id=course_id, course_name=course_name
+        )
+
     played_date = request.form["played_date"]
     tee = request.form["tee"]
     holes = request.form["holes"]
     strokes = request.form["strokes"]
 
-    user_id = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])
-    user_id = user_id[0][0]
+    user_id = db.get_user_id(session["username"])
 
-    sql = "INSERT INTO rounds (user_id, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?)"
-    db.execute(sql, [user_id, played_date, tee, strokes, holes])
+    sql = "INSERT INTO rounds (course_id, user_id, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?, ?)"
+    db.execute(sql, [course_id, user_id, played_date, tee, strokes, holes])
+    return redirect("/")
+
+
+@app.route("/add_course", methods=["GET", "POST"])
+def add_course():
+    if request.method == "GET":
+        return render_template("add_course.html")
+
+    course_name = request.form["course_name"]
+    par = request.form["par"]
+    user_id = db.get_user_id(session["username"])
+
+    sql = "INSERT INTO courses (user_id, name, par) VALUES (?, ?, ?)"
+    db.execute(sql, [user_id, course_name, par])
     return redirect("/")
 
 

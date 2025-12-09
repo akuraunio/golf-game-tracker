@@ -20,6 +20,6 @@ CREATE TABLE rounds (
     course_ID INTEGER REFERENCES courses(id),
     played_date TEXT NOT NULL,
     played_tee TEXT NOT NULL,
-    played_strokes TEXT NOT NULL,
+    played_strokes INTEGER NOT NULL,
     holes INTEGER NOT NULL
 );

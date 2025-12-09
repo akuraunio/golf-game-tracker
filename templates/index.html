@@ -28,7 +28,7 @@ messages = get_flashed_messages() %} {% if messages %}
   </form>
 </details>
 <p>
-  <a href="/add_round_page">Add a golf round</a>
+  <a href="/add_course">Add a golf course to play rounds on</a>
 </p>
 <form action="/search" method="get">
   <p>
@@ -77,6 +77,7 @@ messages = get_flashed_messages() %} {% if messages %}
     <td>{{ c.par }}</td>
     <td>
       <a href="/delete/{{ c.id }}">Delete course</a> <a href="/edit/{{ c.id }}">Edit course</a>
+      <a href="/add_round/{{ c.id }}">Add round</a>
     </td>
   </tr>
   {% endfor %}

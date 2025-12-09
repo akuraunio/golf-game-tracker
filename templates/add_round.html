@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Add round{% endblock %} {% block content %}
+
+<h1>Add a round of golf played for course {{ course_name }}</h1>
+<form action="/add_round/{{ course_id }}" method="post">
+  <input type="hidden" name="course_id" value="{{ course_id }}" />
+  <p>
+    Date: <br />
+    <input type="date" name="played_date" required />
+  </p>
+  <p>
+    Tee: <br />
+    <select name="tee" required>
+      <option value="White">White</option>
+      <option value="Yellow">Yellow</option>
+      <option value="Red">Red</option>
+    </select>
+  </p>
+  <p>
+    Par: <br />
+    <input type="number" name="par" required />
+  </p>
+  <p>
+    Holes: <br />
+    <select name="holes" required>
+      <option value="18">18</option>
+      <option value="9">9</option>
+    </select>
+  </p>
+  <p>
+    Strokes: <br />
+    <input type="number" name="strokes" required />
+  </p>
+  <input type="submit" value="Submit round" />
+</form>
+{% endblock %}
