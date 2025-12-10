@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
 from search_course import search_course
+from calculate_handicap import calculate_handicap
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -15,6 +16,8 @@ def index():
     profile = {}
     rounds = None
     courses = None
+    handicap = None
+
     if "username" in session:
         rows = db.query(
             "SELECT club, favorite_course FROM users WHERE username = ?",
@@ -23,10 +26,10 @@ def index():
         if rows:
             club, favorite_course = rows[0]
             profile = {"club": club, "favorite_course": favorite_course}
-        user_id = db.query(
-            "SELECT id FROM users WHERE username = ?", [session["username"]]
-        )
-        user_id = user_id[0][0]
+
+        user_id = db.get_user_id(session["username"])
+        handicap = calculate_handicap(user_id)
+
         rows = db.query(
             "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
             [user_id],
@@ -45,7 +48,7 @@ def index():
             courses = None
 
     return render_template(
-        "index.html", profile=profile, rounds=rounds, courses=courses
+        "index.html", profile=profile, rounds=rounds, courses=courses, handicap=handicap
     )
 
 
@@ -171,12 +174,19 @@ def profile(username):
         "SELECT club, favorite_course, handicap FROM users WHERE username = ?",
         [username],
     )
+    user_id = db.get_user_id(username)
+    rounds = db.get_player_rounds(user_id)
+
+    own_profile = username == session["username"]
 
     club, favorite_course, handicap = user_info[0]
+    print(rounds)
     return render_template(
         "profile.html",
         username=username,
         club=club,
         favorite_course=favorite_course,
         handicap=handicap,
+        rounds=rounds,
+        own_profile=own_profile,
     )

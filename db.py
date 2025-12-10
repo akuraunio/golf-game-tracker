@@ -31,3 +31,21 @@ def query(sql, params=[]):
 def get_user_id(username):
     user_id = query("SELECT id FROM users WHERE username = ?", [username])
     return user_id[0][0]
+
+
+def get_player_rounds(user_id):
+    sql = """
+        SELECT
+            rounds.id,
+            rounds.played_date,
+            rounds.holes,
+            rounds.played_tee,
+            rounds.played_strokes,
+            courses.name
+        FROM rounds
+        JOIN courses ON rounds.course_id = courses.id
+        WHERE rounds.user_id = ?
+        ORDER BY rounds.played_date DESC
+    """
+    rows = query(sql, [user_id])
+    return rows

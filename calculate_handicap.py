@@ -4,7 +4,7 @@ import db
 def calculate_handicap(user_id):
     # calculate handicap based on the last 5 or fewer played rounds
     sql = """
-    SELECT course.par, rounds.holes, rounds.played_strokes
+    SELECT courses.par, rounds.holes, rounds.played_strokes
     FROM rounds JOIN courses ON rounds.course_id = courses.id
     WHERE rounds.user_id = ?
     ORDER BY rounds.played_date DESC
@@ -19,6 +19,7 @@ def calculate_handicap(user_id):
 
     for par, holes, strokes in handicap_rounds:
         # scale 9 hole round to 18 hole round
+        par, holes, strokes = int(par), int(holes), int(strokes)
         if holes == 9:
             par *= 2
             strokes *= 2

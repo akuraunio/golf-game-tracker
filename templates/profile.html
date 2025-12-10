@@ -1,7 +1,49 @@
 {% extends "base.html" %} {% block title %}Profile page{% endblock %} {% block content %}
 
 <h1>{{ username }}</h1>
+{% if own_profile %}
+<details>
+  <summary>Update profile</summary>
+  <form action="/update_profile" method="post">
+    <label
+      >Your golf club<br />
+      <input type="text" name="club" value="{{ club }}" /> </label
+    ><br /><br />
+    <label
+      >Your favorite course<br />
+      <input type="text" name="favorite_course" value="{{ favorite_course }}" /> </label
+    ><br /><br />
+    <button type="submit">Save</button>
+  </form>
+</details>
+{% else %}
 <p><strong>Home club:</strong> {{ club }}</p>
 <p><strong>Favorite course:</strong> {{ favorite_course }}</p>
 <p><strong>Handicap:</strong> {{ handicap }}</p>
-{% endblock %}
+{% endif %}
+
+<h1>Latest played rounds</h1>
+
+{% if rounds %}
+<h2>Rounds played</h2>
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Date</th>
+    <th>Holes</th>
+    <th>Tee</th>
+    <th>Strokes</th>
+  </tr>
+  {% for r in rounds %}
+  <tr>
+    <td>{{ r.name }}</td>
+    <td>{{ r.played_date }}</td>
+    <td>{{ r.holes }}</td>
+    <td>{{ r.played_tee }}</td>
+    <td>{{ r.played_strokes }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No rounds played.</p>
+{% endif %} {% endblock %}

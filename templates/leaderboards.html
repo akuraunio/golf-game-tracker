@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %}Leaderboards{% endblock %} {% block content %} {% if
+users %}
+<h2>Best players</h2>
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Handicap</th>
+    <th>Rounds played</th>
+    <th>Last active</th>
+  </tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u.username }}</td>
+    <td>{{ u.handicap }}</td>
+    <td>{{ u.rounds_played }}</td>
+    <td>{{ u.last_active }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No users on the platform yet</p>
+{% endif %} {%endblock %}

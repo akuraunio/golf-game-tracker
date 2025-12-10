@@ -17,7 +17,7 @@ CREATE TABLE courses (
 CREATE TABLE rounds (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
-    course_ID INTEGER REFERENCES courses(id),
+    course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
     played_date TEXT NOT NULL,
     played_tee TEXT NOT NULL,
     played_strokes INTEGER NOT NULL,

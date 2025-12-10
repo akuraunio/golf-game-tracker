@@ -6,10 +6,7 @@ messages = get_flashed_messages() %} {% if messages %}
   {% endfor %}
 </ul>
 {% endif %} {% endwith %} {% if session.username %}
-<p>You are logged in as {{ session.username }}</p>
-<p>
-  <a href="/logout">Log out</a>
-</p>
+<p>Your handicap: {{ handicap }}</p>
 <details>
   <summary>Update profile</summary>
   <form action="/update_profile" method="post">
