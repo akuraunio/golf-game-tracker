@@ -121,11 +121,6 @@ def update_profile():
     return redirect("/")
 
 
-@app.route("/add_round_page")
-def add_round_page():
-    return render_template("add_round_page.html")
-
-
 @app.route("/add_round/<int:course_id>", methods=["GET", "POST"])
 def add_round(course_id):
     if request.method == "GET":
@@ -190,3 +185,46 @@ def profile(username):
         rounds=rounds,
         own_profile=own_profile,
     )
+
+
+@app.route("/leaderboards")
+def leaderboards():
+    rows = db.query(
+        """SELECT username, handicap, COUNT(rounds.id) as rounds_played, MAX(rounds.played_date) as last_active
+        FROM users
+        LEFT JOIN rounds ON users.id=rounds.user_id
+        GROUP BY users.id
+        ORDER BY handicap ASC 
+        LIMIT 10"""
+    )
+
+    return render_template("leaderboards.html", users=rows)
+
+
+@app.route("/delete_course/<int:course_id>", methods=["GET", "POST"])
+def delete_course(course_id):
+
+    if request.method == "GET":
+        course_name = db.get_course_name(course_id)
+        return render_template(
+            "delete.html", name=course_name, type="course", id=course_id
+        )
+
+    else:
+        db.execute("DELETE FROM courses WHERE id = ?", [course_id])
+        return redirect("/")
+
+
+@app.route("/delete_round/<int:round_id>", methods=["GET", "POST"])
+def delete_round(round_id):
+
+    if request.method == "GET":
+        round_name = db.query("SELECT played_date FROM rounds WHERE id = ?", [round_id])
+        round_name = "played on" + round_name
+        return render_template(
+            "delete.html", name=round_name, type="course", id=round_id
+        )
+
+    else:
+        db.execute("DELETE FROM rounds WHERE id = ?", [round_id])
+        return redirect("/")

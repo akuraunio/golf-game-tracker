@@ -1,8 +1,11 @@
-{% extends "base.html" %} {% block title %} Delete {{ name }} {% endblock %} {% block content %} Are
-you sure you want to delete {{ type }} {{ name }}
-<form action="/delete/{{id}}" method="post">
-  <button type="submit">Delete permanently</button>
+{% extends "base.html" %} {% block title %} Confirm delete {% endblock %} {% block content %} {% if
+type == "course" %} <strong>Deleting a course will also delete all rounds played on it</strong
+><br />
+{% endif %} Confirm to delete {{ type }} {{ name }}
+<form action="/delete_{{type}}/{{id}}" method="post">
+  <button type="submit">Delete</button>
 </form>
 
 <br />
-<a href="{{ cancel_url }}">Cancel</a>
+<a href="/">Cancel</a>
+{% endblock %}

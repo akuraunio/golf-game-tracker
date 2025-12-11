@@ -49,3 +49,11 @@ def get_player_rounds(user_id):
     """
     rows = query(sql, [user_id])
     return rows
+
+
+def get_course_name(course_id):
+    course_name = query("SELECT name FROM courses WHERE id = ?", [course_id])
+    if not course_name:
+        return None
+    else:
+        return course_name[0][0]

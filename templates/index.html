@@ -54,7 +54,10 @@ messages = get_flashed_messages() %} {% if messages %}
     <td>{{ r.holes }}</td>
     <td>{{ r.played_tee }}</td>
     <td>{{ r.played_strokes }}</td>
-    <td><a href="/delete/{{ r.id }}">Delete round</a> <a href="/edit/{{ r.id }}">Edit round</a></td>
+    <td>
+      <a href="/delete_round/{{ r.id }}">Delete round</a>
+      <a href="/edit_round/{{ r.id }}">Edit round</a>
+    </td>
   </tr>
   {% endfor %}
 </table>
@@ -73,7 +76,8 @@ messages = get_flashed_messages() %} {% if messages %}
     <td>{{ c.name }}</td>
     <td>{{ c.par }}</td>
     <td>
-      <a href="/delete/{{ c.id }}">Delete course</a> <a href="/edit/{{ c.id }}">Edit course</a>
+      <a href="/delete_course/{{ c.id }}">Delete course</a>
+      <a href="/edit_course/{{ c.id }}">Edit course</a>
       <a href="/add_round/{{ c.id }}">Add round</a>
     </td>
   </tr>
