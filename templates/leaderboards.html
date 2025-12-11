@@ -3,6 +3,7 @@ users %}
 <h2>Best players</h2>
 <table>
   <tr>
+    <th></th>
     <th>Username</th>
     <th>Handicap</th>
     <th>Rounds played</th>
@@ -10,6 +11,17 @@ users %}
   </tr>
   {% for u in users %}
   <tr>
+    <td>{% if loop.index == 1 %} 
+      🏆 
+      {% elif loop.index == 2 %}
+      🥈
+      {% elif loop.index == 3 %}
+      🥉
+      {% else %}
+      {{ loop.index }}
+    {% endif %}
+    </td>
+      
     <td>{{ u.username }}</td>
     <td>{{ u.handicap }}</td>
     <td>{{ u.rounds_played }}</td>
