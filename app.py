@@ -31,7 +31,7 @@ def index():
         handicap = calculate_handicap(user_id)
 
         rows = db.query(
-            "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
+            "SELECT id, played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
             [user_id],
         )
         if rows:
@@ -228,3 +228,39 @@ def delete_round(round_id):
     else:
         db.execute("DELETE FROM rounds WHERE id = ?", [round_id])
         return redirect("/")
+
+
+@app.route("/edit_course/<int:course_id>", methods=["GET", "POST"])
+def edit_course(course_id):
+    if request.method == "GET":
+        return render_template("edit.html", type="course", id=course_id)
+
+    course_name = request.form["course_name"]
+    par = request.form["par"]
+
+    db.execute(
+        "UPDATE courses SET name = ?, par = ? WHERE id = ?",
+        [course_name, par, course_id],
+    )
+    return redirect("/")
+
+
+@app.route("/edit_round/<int:round_id>", methods=["GET", "POST"])
+def edit_round(round_id):
+    if request.method == "GET":
+        row = db.query(
+            "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE id=?",
+            [round_id],
+        )
+        return render_template("edit.html", type="round", id=round_id, round=row)
+
+    played_date = request.form["played_date"]
+    played_tee = request.form["played_tee"]
+    played_strokes = request.form["played_strokes"]
+    holes = request.form["holes"]
+
+    db.execute(
+        "UPDATE rounds SET played_date = ?,played_tee = ?,played_strokes = ?, holes = ? WHERE id = ?",
+        [played_date, played_tee, played_strokes, holes, round_id],
+    )
+    return redirect("/")

@@ -7,16 +7,10 @@
 
   <body>
     <div class="topnav">
-      {% if session.username %}
       <p>
-        You are logged in as {{ session.username }}
+        {% if session.username %} You are logged in as {{ session.username }}
         <a href="/logout" class="button">Log out</a>
-      </p>
-
-      {% else %}
-      <p>Login or create a profile</p>
-      {% endif %}
-      <p>
+        {% else %} Login or create a profile {% endif %}
         <a href="/">Index page</a>
         <a href="/leaderboards">Leaderboards</a>
       </p>

@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block title %} Edit {{ type }} {% endblock %} {% block content %} Edit
+{{ type }} {{ name }}
+<form action="/edit_{{type}}/{{id}}" method="post">
+  <button type="submit">Edit</button>
+</form>
+
+<br />
+<a href="/">Cancel</a>
+{% endblock %}

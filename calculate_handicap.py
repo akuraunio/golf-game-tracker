@@ -27,7 +27,8 @@ def calculate_handicap(user_id):
         differential = strokes - par
         differentials.append(differential)
 
-    handicap_index = (sum(differentials) / len(differentials)) * 0.96
+    handicap_index = round((sum(differentials) / len(differentials)) * 0.96, 1)
+
     db.execute("UPDATE users SET handicap = ? WHERE id = ?", [handicap_index, user_id])
 
     return handicap_index
