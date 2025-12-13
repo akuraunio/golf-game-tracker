@@ -1,3 +1,7 @@
+body {
+  background-color: ivory;
+}
+
 th,
 td {
   text-align: left;
@@ -8,10 +12,32 @@ table {
   width: 50%;
 }
 
-.button {
+.logoutbutton {
   background-color: tomato;
   color: black;
   padding: 8px 10px;
   text-align: center;
   text-decoration: 0;
+}
+
+.button {
+  background-color: lightgray;
+  color: black;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: 0;
+}
+
+.topnav {
+  background-color: yellowgreen;
+  padding: 15px 10px;
+}
+
+.nav-right {
+  float: right;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: max-content;
 }

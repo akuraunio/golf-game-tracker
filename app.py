@@ -217,12 +217,11 @@ def delete_course(course_id):
 
 @app.route("/delete_round/<int:round_id>", methods=["GET", "POST"])
 def delete_round(round_id):
-
     if request.method == "GET":
         round_name = db.query("SELECT played_date FROM rounds WHERE id = ?", [round_id])
-        round_name = "played on" + round_name
+        round_name = "played on " + round_name[0][0]
         return render_template(
-            "delete.html", name=round_name, type="course", id=round_id
+            "delete.html", name=round_name, type="round", id=round_id
         )
 
     else:
@@ -233,9 +232,11 @@ def delete_round(round_id):
 @app.route("/edit_course/<int:course_id>", methods=["GET", "POST"])
 def edit_course(course_id):
     if request.method == "GET":
-        return render_template("edit.html", type="course", id=course_id)
+        course = db.query("SELECT name, par FROM courses WHERE id = ?", [course_id])
+        course = course[0]
+        return render_template("edit.html", type="course", id=course_id, course=course)
 
-    course_name = request.form["course_name"]
+    course_name = request.form["name"]
     par = request.form["par"]
 
     db.execute(
@@ -252,7 +253,8 @@ def edit_round(round_id):
             "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE id=?",
             [round_id],
         )
-        return render_template("edit.html", type="round", id=round_id, round=row)
+        round = row[0]
+        return render_template("edit.html", type="round", id=round_id, round=round)
 
     played_date = request.form["played_date"]
     played_tee = request.form["played_tee"]

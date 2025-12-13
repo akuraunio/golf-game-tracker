@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="static/styles.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
     <title>{% block title %}{% endblock %}</title>
   </head>
 
   <body>
     <div class="topnav">
-      <p>
+      <a href="/" class="button">Index page</a>
+      <a href="/leaderboards" class="button">Leaderboards</a>
+      <span class="nav-right">
         {% if session.username %} You are logged in as {{ session.username }}
-        <a href="/logout" class="button">Log out</a>
+        <a href="/profile/{{ session.username }}" class="button">My profile</a>
+        <a href="/logout" class="logoutbutton">Log out</a>
         {% else %} Login or create a profile {% endif %}
-        <a href="/">Index page</a>
-        <a href="/leaderboards">Leaderboards</a>
-      </p>
+      </span>
     </div>
 
     <div>{% block content %}{% endblock %}</div>

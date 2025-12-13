@@ -7,26 +7,7 @@ messages = get_flashed_messages() %} {% if messages %}
 </ul>
 {% endif %} {% endwith %} {% if session.username %}
 <p>Your handicap: {{ handicap }}</p>
-<details>
-  <summary>Update profile</summary>
-  <form action="/update_profile" method="post">
-    <label
-      >Your golf club<br />
-      <input type="text" name="club" value="{{ profile.get('club', '') }}" /> </label
-    ><br /><br />
-    <label
-      >Your favorite course<br />
-      <input
-        type="text"
-        name="favorite_course"
-        value="{{ profile.get('favorite_course', '') }}" /> </label
-    ><br /><br />
-    <button type="submit">Save</button>
-  </form>
-</details>
-<p>
-  <a href="/add_course">Add a golf course to play rounds on</a>
-</p>
+<hr />
 <form action="/search" method="get">
   <p>
     Course name: {% if query %}
@@ -37,7 +18,31 @@ messages = get_flashed_messages() %} {% if messages %}
   </p>
   <input type="submit" value="Search" />
 </form>
-{% if rounds %}
+<p>
+  <a href="/add_course">Add a golf course to play rounds on</a>
+</p>
+<h2>Your courses</h2>
+{% if courses %}
+<table>
+  <tr>
+    <th>Course name</th>
+    <th>Par</th>
+  </tr>
+  {% for c in courses %}
+  <tr>
+    <td>{{ c.name }}</td>
+    <td>{{ c.par }}</td>
+    <td>
+      <a href="/delete_course/{{ c.id }}">Delete course</a>
+      <a href="/edit_course/{{ c.id }}">Edit course</a>
+      <a href="/add_round/{{ c.id }}">Add round</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>You have not added courses. You can add a course or play rounds on courses added by others</p>
+{% endif %} {% if rounds %}
 <h2>Rounds played</h2>
 <table>
   <tr>
@@ -63,28 +68,6 @@ messages = get_flashed_messages() %} {% if messages %}
 </table>
 {% else %}
 <p>No rounds played. Add a course or search for courses added by others to play a round</p>
-{% endif %}
-<h2>Your courses</h2>
-{% if courses %}
-<table>
-  <tr>
-    <th>Course name</th>
-    <th>Par</th>
-  </tr>
-  {% for c in courses %}
-  <tr>
-    <td>{{ c.name }}</td>
-    <td>{{ c.par }}</td>
-    <td>
-      <a href="/delete_course/{{ c.id }}">Delete course</a>
-      <a href="/edit_course/{{ c.id }}">Edit course</a>
-      <a href="/add_round/{{ c.id }}">Add round</a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-{% else %}
-<p>You have not added courses. You can add a course or play rounds on courses added by others</p>
 {% endif %} {% else %}
 <form action="/login" method="post">
   <p>

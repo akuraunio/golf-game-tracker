@@ -1,5 +1,6 @@
 import db
 
+
 def search_course(query):
-    sql = """SELECT course, played_date, played_tee, played_strokes, holes FROM rounds WHERE course LIKE ?"""
+    sql = "SELECT name, par FROM courses WHERE name LIKE ?"
     return db.query(sql, ["%" + query + "%"])

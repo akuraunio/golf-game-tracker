@@ -1,16 +1,32 @@
-  {% if query %}
-  <hr />
-  <h2>Search results</h2>
-  
-  <ul>
-    {% for r in results %}
-    <li>
-        <p>{{ r.played_date }}</p>
-        <p>{{ r.course }}</p>
-        <p>{{ r.played_tee }}</p>
-        <p>{{ r.played_strokes }}</p>
-        <p>{{ r.holes }}</p>
-    </li>
-    {% endfor %}
-    </ul>
-  {% endif %}
+{% extends "base.html" %} {% block title %}Search results{% endblock %} {% block content %} {% if
+query %}
+<form action="/search" method="get">
+  <p>
+    Course name: {% if query %}
+    <input type="text" name="query" value="{{ query }}" />
+    {% else %}
+    <input type="text" name="query" />
+    {% endif %}
+  </p>
+  <input type="submit" value="Search" />
+</form>
+<hr />
+<h2>Search results</h2>
+<table>
+  <tr>
+    <th>Course name</th>
+    <th>Par</th>
+  </tr>
+  {% for r in results %}
+  <tr>
+    <td>{{ r.name }}</td>
+    <td>{{ r.par }}</td>
+    <td>
+      <a href="/delete_course/{{ r.id }}">Delete course</a>
+      <a href="/edit_course/{{ r.id }}">Edit course</a>
+      <a href="/add_round/{{ r.id }}">Add round</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %} {% endblock %}

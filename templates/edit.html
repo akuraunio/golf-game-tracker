@@ -1,9 +1,34 @@
-{% extends "base.html" %} {% block title %} Edit {{ type }} {% endblock %} {% block content %} Edit
-{{ type }} {{ name }}
-<form action="/edit_{{type}}/{{id}}" method="post">
+{% extends "base.html" %} {% block title %} Edit {{ type }} {% endblock %} {% block content %} 
+<br>  
+{% if type == "course" %}
+<form class="form-grid" action="/edit_{{type}}/{{id}}" method="post">
+  <label for="name">Course name</label>
+  <input type="text" name="name" value="{{ course.name }}"></input>
+  <br>
+  <label for="par">Par</label>
+  <input type="text" name="par" value="{{ course.par }}"></input>
+  <br>
   <button type="submit">Edit</button>
 </form>
 
-<br />
+{% elif type == "round" %}
+<form class="form-grid" action="/edit_{{type}}/{{id}}" method="post">
+  <label for="played_date">Played date</label>
+  <input type="text" name="played_date" value="{{ round.played_date }}"></input>
+  <br>
+  <label for="tee">Tee</label>
+  <input type="text" name="played_tee" value="{{ round.played_tee }}"></input>
+  <br>
+  <label for="played_strokes">Strokes</label>
+  <input type="number" name="played_strokes" value="{{ round.played_strokes}}"></input>
+  <br>
+  <label for="holes">Holes</label>
+  <input type="text" name="holes" value="{{ round.holes }}"></input>
+  <br>
+  <button type="submit">Edit</button>
+</form>
+
+{% endif %}
+<br><br>
 <a href="/">Cancel</a>
 {% endblock %}
