@@ -3,6 +3,7 @@ type == "course" %} <strong>Deleting a course will also delete all rounds played
 ><br />
 {% endif %} Confirm to delete {{ type }} {{ name }}
 <form action="/delete_{{type}}/{{id}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <button type="submit">Delete</button>
 </form>
 

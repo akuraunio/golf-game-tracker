@@ -13,6 +13,7 @@
       >Your favorite course<br />
       <input type="text" name="favorite_course" value="{{ favorite_course }}" /> </label
     ><br /><br />
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <button type="submit">Save</button>
   </form>
 </details>

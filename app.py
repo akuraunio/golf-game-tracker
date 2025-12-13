@@ -1,6 +1,7 @@
 from flask import Flask
-from flask import render_template, redirect, request, session, flash
+from flask import abort, render_template, redirect, request, session, flash
 import sqlite3
+import secrets
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
@@ -97,6 +98,7 @@ def login():
 
     if check_password_hash(password_hash, password):
         session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
         return "Wrong username or password"
@@ -111,6 +113,7 @@ def logout():
 
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
+    check_csrf()
     club = request.form["club"]
     favorite = request.form["favorite_course"]
     row = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])
@@ -131,6 +134,7 @@ def add_round(course_id):
             "add_round.html", course_id=course_id, course_name=course_name
         )
 
+    check_csrf()
     played_date = request.form["played_date"]
     tee = request.form["tee"]
     holes = request.form["holes"]
@@ -155,6 +159,7 @@ def add_course():
     if request.method == "GET":
         return render_template("add_course.html")
 
+    check_csrf()
     course_name = request.form["course_name"]
     par = request.form["par"]
     user_id = db.get_user_id(session["username"])
@@ -219,6 +224,7 @@ def delete_course(course_id):
         )
 
     else:
+        check_csrf()
         db.execute("DELETE FROM courses WHERE id = ?", [course_id])
         return redirect("/")
 
@@ -233,6 +239,7 @@ def delete_round(round_id):
         )
 
     else:
+        check_csrf()
         db.execute("DELETE FROM rounds WHERE id = ?", [round_id])
         return redirect("/")
 
@@ -244,6 +251,7 @@ def edit_course(course_id):
         course = course[0]
         return render_template("edit.html", type="course", id=course_id, course=course)
 
+    check_csrf()
     course_name = request.form["name"]
     par = request.form["par"]
 
@@ -264,6 +272,7 @@ def edit_round(round_id):
         round = row[0]
         return render_template("edit.html", type="round", id=round_id, round=round)
 
+    check_csrf()
     played_date = request.form["played_date"]
     played_tee = request.form["played_tee"]
     played_strokes = request.form["played_strokes"]
@@ -274,3 +283,8 @@ def edit_round(round_id):
         [played_date, played_tee, played_strokes, holes, round_id],
     )
     return redirect("/")
+
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)

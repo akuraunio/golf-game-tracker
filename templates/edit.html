@@ -8,6 +8,7 @@
   <label for="par">Par</label>
   <input type="text" name="par" value="{{ course.par }}"></input>
   <br>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <button type="submit">Edit</button>
 </form>
 
@@ -25,6 +26,7 @@
   <label for="holes">Holes</label>
   <input type="text" name="holes" value="{{ round.holes }}"></input>
   <br>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <button type="submit">Edit</button>
 </form>
 
