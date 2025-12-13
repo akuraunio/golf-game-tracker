@@ -65,6 +65,7 @@ def create():
     club = request.form["club"]
     favorite_course = request.form["favorite_course"]
     handicap = 54  # initial handicap is always 54
+
     if len(password1) < 4:
         flash("Error: Password needs to be atleast 4 characters")
         return redirect("/register")
@@ -134,6 +135,13 @@ def add_round(course_id):
     tee = request.form["tee"]
     holes = request.form["holes"]
     strokes = request.form["strokes"]
+
+    if int(strokes) <= 0:
+        flash("Error: strokes must be greater than 0")
+        return redirect(request.url)
+    elif int(strokes) < int(holes):
+        flash("Error: strokes must be equal or greater than holes played")
+        return redirect(request.url)
 
     user_id = db.get_user_id(session["username"])
 
