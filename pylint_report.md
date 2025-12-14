@@ -1,7 +1,8 @@
 # Pylint report of the project
 
 Feedback given by pylint:
-'''
+
+```
 **\*\***\***\*\*** Module app
 app.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 app.py:16:0: C0116: Missing function or method docstring (missing-function-docstring)
@@ -70,11 +71,11 @@ JOIN clubs ON users.club_id = clubs.id (duplicate-code)
 ---
 
 Your code has been rated at 8.13/10 (previous run: 8.23/10, -0.09)
-'''
+```
 
 ## Why were these warnings not fixex
 
-C0114, C0116: No mention about addressing these in course material or in the example app
-R1705: I did not understand why this is a problem, could save some indentation space but does not seem critical
-W0101: Included in the example app boilerplate, logic handled in app.py anyway
-R0801 Similar lines in 2 files: It is about two sql statements, they are different enough to be separate
+- C0114, C0116: No mention about addressing these in course material or in the example app
+- R1705: I did not understand why this is a problem, could save some indentation space but does not seem critical
+- W0101: Included in the example app boilerplate, logic handled in app.py anyway
+- R0801 Similar lines in 2 files: It is about two sql statements, they are different enough to be separate
