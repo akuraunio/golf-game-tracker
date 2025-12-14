@@ -57,3 +57,24 @@ def get_course_name(course_id):
         return None
     else:
         return course_name[0][0]
+
+
+def get_club_name(club_id):
+    club_name = query("SELECT name FROM clubs WHERE id = ?", [club_id])
+    if not club_name:
+        return None
+    else:
+        return club_name[0][0]
+
+
+def get_clubs():
+    rows = query("SELECT id, name from clubs")
+    return rows
+
+
+def get_club_id(name):
+    club_id = query("SELECT id FROM clubs WHERE name = ?", [name])
+    if not club_id:
+        return None
+    else:
+        return club_id[0][0]

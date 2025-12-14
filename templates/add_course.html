@@ -9,6 +9,15 @@
     <label for="par">Par:</label><br />
     <input type="number" id="par" name="par" />
   </p>
+  <p>
+    <label for="club_name">Club: *</label><br />
+    <select id="club_name" name="club_name" required>
+      <option value="" disabled selected>Select your club</option>
+      {% for club in clubs %}
+      <option value="{{ club.id }}">{{ club.name }}</option>
+      {% endfor %}
+    </select>
+  </p>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Submit course" />
 </form>

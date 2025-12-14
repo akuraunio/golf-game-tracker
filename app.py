@@ -21,7 +21,10 @@ def index():
 
     if "username" in session:
         rows = db.query(
-            "SELECT club, favorite_course FROM users WHERE username = ?",
+            """
+            SELECT clubs.name, users.favorite_course 
+            FROM users JOIN clubs ON users.club_id=clubs.id
+            WHERE users.username = ?""",
             [session["username"]],
         )
         if rows:
@@ -55,7 +58,8 @@ def index():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    clubs = db.get_clubs()
+    return render_template("register.html", clubs=clubs)
 
 
 @app.route("/create_user", methods=["POST"])
@@ -63,7 +67,8 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
-    club = request.form["club"]
+    club_name = request.form["club"]
+    club = db.get_club_id(club_name)
     favorite_course = request.form["favorite_course"]
     handicap = 54  # initial handicap is always 54
 
@@ -76,7 +81,7 @@ def create():
     password_hash = generate_password_hash(password1)
 
     try:
-        sql = "INSERT INTO users (username, password_hash, club, favorite_course, handicap) VALUES (?, ?, ?, ?, ?)"
+        sql = "INSERT INTO users (username, password_hash, club_id, favorite_course, handicap) VALUES (?, ?, ?, ?, ?)"
         db.execute(sql, [username, password_hash, club, favorite_course, handicap])
     except sqlite3.IntegrityError:
         return "Error: Username is already taken"
@@ -114,12 +119,13 @@ def logout():
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
     check_csrf()
-    club = request.form["club"]
+    club_name = request.form["club"]
+    club = db.get_club_id(club_name)
     favorite = request.form["favorite_course"]
     row = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])
     user_id = row[0][0]
     db.execute(
-        "UPDATE users SET club = ?, favorite_course = ? WHERE id = ?",
+        "UPDATE users SET club_id = ?, favorite_course = ? WHERE id = ?",
         [club if club else None, favorite if favorite else None, user_id],
     )
     return redirect("/")
@@ -157,15 +163,19 @@ def add_round(course_id):
 @app.route("/add_course", methods=["GET", "POST"])
 def add_course():
     if request.method == "GET":
-        return render_template("add_course.html")
+        clubs = db.get_clubs()
+        return render_template("add_course.html", clubs=clubs)
 
     check_csrf()
     course_name = request.form["course_name"]
     par = request.form["par"]
+    club_name = request.form["club"]
+    club = db.get_club_id(club_name)
+
     user_id = db.get_user_id(session["username"])
 
-    sql = "INSERT INTO courses (user_id, name, par) VALUES (?, ?, ?)"
-    db.execute(sql, [user_id, course_name, par])
+    sql = "INSERT INTO courses (user_id, club_id, name, par) VALUES (?, ?, ?, ?)"
+    db.execute(sql, [user_id, club, course_name, par])
     return redirect("/")
 
 
@@ -179,11 +189,15 @@ def search():
 @app.route("/profile/<username>")
 def profile(username):
     user_info = db.query(
-        "SELECT club, favorite_course, handicap FROM users WHERE username = ?",
+        """
+            SELECT clubs.name, users.favorite_course, users.handicap 
+            FROM users JOIN clubs ON users.club_id=clubs.id
+            WHERE users.username = ?""",
         [username],
     )
     user_id = db.get_user_id(username)
     rounds = db.get_player_rounds(user_id)
+    clubs = db.get_clubs()
 
     own_profile = username == session["username"]
 
@@ -193,6 +207,7 @@ def profile(username):
         "profile.html",
         username=username,
         club=club,
+        clubs=clubs,
         favorite_course=favorite_course,
         handicap=handicap,
         rounds=rounds,

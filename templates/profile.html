@@ -6,8 +6,13 @@
   <summary>Update profile</summary>
   <form action="/update_profile" method="post">
     <p>
-      <label for="club">Your golf club</label><br />
-      <input id="club" type="text" name="club" value="{{ club }}" />
+      <label for="club_name">Club: *</label><br />
+      <select id="club_name" name="club_name" required>
+        <option value="" disabled selected>Select your club</option>
+        {% for club in clubs %}
+        <option value="{{ club.id }}">{{ club.name }}</option>
+        {% endfor %}
+      </select>
     </p>
 
     <p>
