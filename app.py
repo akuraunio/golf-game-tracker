@@ -23,8 +23,10 @@ def index():
         handicap = calculate_handicap(user_id)
 
         rows = db.query(
-            """SELECT id, played_date, played_tee, played_strokes, holes 
-            FROM rounds WHERE user_id = ?""",
+            """SELECT rounds.id, rounds.played_date, rounds.played_tee, rounds.played_strokes, rounds.holes, courses.name as course_name
+            FROM rounds
+            JOIN courses ON rounds.course_id=courses.id
+            WHERE rounds.user_id = ?""",
             [user_id],
         )
         if rows:
@@ -326,9 +328,9 @@ def clubs_page():
         """
                      SELECT clubs.name, COUNT(users.id) as members
                      FROM clubs 
-                     JOIN users on users.club_id=clubs.id
+                     LEFT JOIN users on users.club_id=clubs.id
                      GROUP BY clubs.name
-                     ORDER BY members"""
+                     ORDER BY members DESC"""
     )
 
     return render_template("clubs.html", clubs=clubs)

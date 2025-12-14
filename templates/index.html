@@ -15,7 +15,8 @@ session.username %}
 <p>
   <a href="/add_course">Add a golf course to play rounds on</a>
 </p>
-<h2>Your courses</h2>
+<h2>All courses</h2>
+<p>Courses added by you are displayed at the top of the list</p>
 {% if courses %}
 <table>
   <tr>
@@ -34,7 +35,7 @@ session.username %}
       <div class="actions">
         <a href="/delete_course/{{ c.id }}">Delete</a>
         <a href="/edit_course/{{ c.id }}">Edit</a>
-        <a href="/add_round/{{ c.id }}">Add round</a>
+        <a href="/add_round/{{ c.id }}">Play round on this course</a>
       </div>
     </td>
   </tr>
@@ -43,7 +44,7 @@ session.username %}
 {% else %}
 <p>You have not added courses. You can add a course or play rounds on courses added by others</p>
 {% endif %} {% if rounds %}
-<h2>Rounds played</h2>
+<h2>Your personal rounds played</h2>
 <table>
   <tr>
     <th>Course</th>
@@ -54,14 +55,16 @@ session.username %}
   </tr>
   {% for r in rounds %}
   <tr>
-    <td>{{ r.course }}</td>
+    <td>{{ r.course_name }}</td>
     <td>{{ r.played_date }}</td>
     <td>{{ r.holes }}</td>
     <td>{{ r.played_tee }}</td>
     <td>{{ r.played_strokes }}</td>
     <td>
-      <a href="/delete_round/{{ r.id }}">Delete round</a>
-      <a href="/edit_round/{{ r.id }}">Edit round</a>
+      <div class="actions">
+        <a href="/delete_round/{{ r.id }}">Delete round</a>
+        <a href="/edit_round/{{ r.id }}">Edit round</a>
+      </div>
     </td>
   </tr>
   {% endfor %}
