@@ -2,7 +2,7 @@ import sqlite3
 
 con = sqlite3.connect("database.db")
 
-with open("schema.sql") as schema:
+with open("schema.sql", encoding="utf-8") as schema:
     con.executescript(schema.read())
 
 clubs = [

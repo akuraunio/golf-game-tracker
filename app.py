@@ -1,7 +1,7 @@
-from flask import Flask
-from flask import abort, render_template, redirect, request, session, flash
 import sqlite3
 import secrets
+from flask import Flask
+from flask import abort, render_template, redirect, request, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
@@ -9,12 +9,12 @@ from search_course import search_course
 from calculate_handicap import calculate_handicap
 
 app = Flask(__name__)
-app.secret_key = config.secret_key
+app.secret_key = config.SECRET_KEY
 
 
 @app.route("/")
 def index():
-    profile = {}
+    user_profile = {}
     rounds = None
     courses = None
     handicap = None
@@ -29,13 +29,14 @@ def index():
         )
         if rows:
             club, favorite_course = rows[0]
-            profile = {"club": club, "favorite_course": favorite_course}
+            user_profile = {"club": club, "favorite_course": favorite_course}
 
         user_id = db.get_user_id(session["username"])
         handicap = calculate_handicap(user_id)
 
         rows = db.query(
-            "SELECT id, played_date, played_tee, played_strokes, holes FROM rounds WHERE user_id = ?",
+            """SELECT id, played_date, played_tee, played_strokes, holes 
+            FROM rounds WHERE user_id = ?""",
             [user_id],
         )
         if rows:
@@ -52,7 +53,11 @@ def index():
             courses = None
 
     return render_template(
-        "index.html", profile=profile, rounds=rounds, courses=courses, handicap=handicap
+        "index.html",
+        profile=user_profile,
+        rounds=rounds,
+        courses=courses,
+        handicap=handicap,
     )
 
 
@@ -82,7 +87,9 @@ def create():
     password_hash = generate_password_hash(password1)
 
     try:
-        sql = "INSERT INTO users (username, password_hash, club_id, favorite_course, handicap) VALUES (?, ?, ?, ?, ?)"
+        sql = """
+        INSERT INTO users (username, password_hash, club_id, favorite_course, handicap) 
+        VALUES (?, ?, ?, ?, ?)"""
         db.execute(sql, [username, password_hash, club, favorite_course, handicap])
     except sqlite3.IntegrityError:
         return "Error: Username is already taken"
@@ -158,7 +165,10 @@ def add_round(course_id):
 
     user_id = db.get_user_id(session["username"])
 
-    sql = "INSERT INTO rounds (course_id, user_id, played_date, played_tee, played_strokes, holes) VALUES (?, ?, ?, ?, ?, ?)"
+    sql = """
+    INSERT INTO rounds (course_id, user_id, played_date, played_tee, played_strokes, holes) 
+    VALUES (?, ?, ?, ?, ?, ?)
+    """
     db.execute(sql, [course_id, user_id, played_date, tee, strokes, holes])
     return redirect("/")
 
@@ -221,7 +231,8 @@ def profile(username):
 @app.route("/leaderboards")
 def leaderboards():
     rows = db.query(
-        """SELECT username, handicap, COUNT(rounds.id) as rounds_played, MAX(rounds.played_date) as last_active
+        """SELECT username, handicap, 
+        COUNT(rounds.id) as rounds_played, MAX(rounds.played_date) as last_active
         FROM users
         LEFT JOIN rounds ON users.id=rounds.user_id
         GROUP BY users.id
@@ -287,8 +298,8 @@ def edit_round(round_id):
             "SELECT played_date, played_tee, played_strokes, holes FROM rounds WHERE id=?",
             [round_id],
         )
-        round = row[0]
-        return render_template("edit.html", type="round", id=round_id, round=round)
+        golf_round = row[0]
+        return render_template("edit.html", type="round", id=round_id, round=golf_round)
 
     check_csrf()
     played_date = request.form["played_date"]
@@ -297,7 +308,10 @@ def edit_round(round_id):
     holes = request.form["holes"]
 
     db.execute(
-        "UPDATE rounds SET played_date = ?,played_tee = ?,played_strokes = ?, holes = ? WHERE id = ?",
+        """
+        UPDATE rounds SET played_date = ?,played_tee = ?,played_strokes = ?, holes = ? 
+        WHERE id = ?
+        """,
         [played_date, played_tee, played_strokes, holes, round_id],
     )
     return redirect("/")
