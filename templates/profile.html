@@ -1,6 +1,8 @@
 {% extends "base.html" %} {% block title %}Profile page{% endblock %} {% block content %}
 
 <h1>{{ username }}</h1>
+<p>{{ user_club }}</p>
+<hr />
 {% if own_profile %}
 <details>
   <summary>Update profile</summary>
@@ -10,7 +12,7 @@
       <select id="club_name" name="club_name" required>
         <option value="" disabled selected>Select your club</option>
         {% for club in clubs %}
-        <option value="{{ club.id }}">{{ club.name }}</option>
+        <option value="{{ club.name }}" {% if club.name  == user_club %}selected{% endif %}>{{ club.name }}</option>
         {% endfor %}
       </select>
     </p>

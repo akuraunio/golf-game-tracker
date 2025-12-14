@@ -14,7 +14,7 @@
     <select id="club_name" name="club_name" required>
       <option value="" disabled selected>Select your club</option>
       {% for club in clubs %}
-      <option value="{{ club.id }}">{{ club.name }}</option>
+      <option value="{{ club.name }}">{{ club.name }}</option>
       {% endfor %}
     </select>
   </p>

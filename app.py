@@ -67,8 +67,9 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
-    club_name = request.form["club"]
+    club_name = request.form["club_name"]
     club = db.get_club_id(club_name)
+    print(club)
     favorite_course = request.form["favorite_course"]
     handicap = 54  # initial handicap is always 54
 
@@ -98,7 +99,8 @@ def login():
     sql = "SELECT password_hash FROM users WHERE username = ?"
     username_password_hash = db.query(sql, [username])
     if not username_password_hash:
-        return "Wrong username or password"
+        flash("Wrong username or password")
+        return redirect("/")
     password_hash = username_password_hash[0][0]
 
     if check_password_hash(password_hash, password):
@@ -106,7 +108,8 @@ def login():
         session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
-        return "Wrong username or password"
+        flash("Wrong username or password")
+        return redirect("/")
 
 
 @app.route("/logout")
@@ -119,7 +122,7 @@ def logout():
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
     check_csrf()
-    club_name = request.form["club"]
+    club_name = request.form["club_name"]
     club = db.get_club_id(club_name)
     favorite = request.form["favorite_course"]
     row = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])
@@ -169,7 +172,7 @@ def add_course():
     check_csrf()
     course_name = request.form["course_name"]
     par = request.form["par"]
-    club_name = request.form["club"]
+    club_name = request.form["club_name"]
     club = db.get_club_id(club_name)
 
     user_id = db.get_user_id(session["username"])
@@ -206,7 +209,7 @@ def profile(username):
     return render_template(
         "profile.html",
         username=username,
-        club=club,
+        user_club=club,
         clubs=clubs,
         favorite_course=favorite_course,
         handicap=handicap,

@@ -16,7 +16,7 @@ clubs = [
     "Tawast Golf",
 ]
 
-con.executemany("INSERT INTO clubs (name) VALUES (?)", clubs)
+con.executemany("INSERT INTO clubs (name) VALUES (?)", [(club,) for club in clubs])
 
 con.commit()
 con.close()
