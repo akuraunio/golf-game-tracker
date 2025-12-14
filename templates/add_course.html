@@ -12,7 +12,7 @@
   <p>
     <label for="club_name">Club: *</label><br />
     <select id="club_name" name="club_name" required>
-      <option value="" disabled selected>Select your club</option>
+      <option value="" disabled selected>Select club of the course</option>
       {% for club in clubs %}
       <option value="{{ club.name }}">{{ club.name }}</option>
       {% endfor %}

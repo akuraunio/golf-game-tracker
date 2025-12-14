@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Browse all clubs{% endblock %} {% block content %}
+<h1>All clubs</h1>
+
+{% if clubs %}
+<table>
+  <tr>
+    <th>Club</th>
+    <th>Members</th>
+  </tr>
+  {% for club in clubs %}
+  <tr>
+    <td>{{ club.name }}</td>
+    <td>{{ club.members }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No clubs</p>
+{% endif %} {% endblock %}

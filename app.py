@@ -14,23 +14,11 @@ app.secret_key = config.SECRET_KEY
 
 @app.route("/")
 def index():
-    user_profile = {}
     rounds = None
     courses = None
     handicap = None
 
     if "username" in session:
-        rows = db.query(
-            """
-            SELECT clubs.name, users.favorite_course 
-            FROM users JOIN clubs ON users.club_id=clubs.id
-            WHERE users.username = ?""",
-            [session["username"]],
-        )
-        if rows:
-            club, favorite_course = rows[0]
-            user_profile = {"club": club, "favorite_course": favorite_course}
-
         user_id = db.get_user_id(session["username"])
         handicap = calculate_handicap(user_id)
 
@@ -44,7 +32,23 @@ def index():
         else:
             rounds = None
         rows = db.query(
-            "SELECT id, name, par FROM courses WHERE user_id = ?",
+            """
+            SELECT
+                courses.id,
+                courses.name,
+                courses.par,
+                clubs.name AS club_name,
+                users.username AS username
+            FROM courses
+            JOIN users ON courses.user_id = users.id
+            JOIN clubs ON users.club_id = clubs.id
+            ORDER BY
+                CASE
+                    WHEN courses.user_id = ? THEN 0
+                    ELSE 1
+                END,
+                courses.name
+            """,
             [user_id],
         )
         if rows:
@@ -54,7 +58,6 @@ def index():
 
     return render_template(
         "index.html",
-        profile=user_profile,
         rounds=rounds,
         courses=courses,
         handicap=handicap,
@@ -315,6 +318,20 @@ def edit_round(round_id):
         [played_date, played_tee, played_strokes, holes, round_id],
     )
     return redirect("/")
+
+
+@app.route("/clubs", methods=["GET"])
+def clubs_page():
+    clubs = db.query(
+        """
+                     SELECT clubs.name, COUNT(users.id) as members
+                     FROM clubs 
+                     JOIN users on users.club_id=clubs.id
+                     GROUP BY clubs.name
+                     ORDER BY members"""
+    )
+
+    return render_template("clubs.html", clubs=clubs)
 
 
 def check_csrf():

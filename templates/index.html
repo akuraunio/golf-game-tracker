@@ -21,15 +21,21 @@ session.username %}
   <tr>
     <th>Course name</th>
     <th>Par</th>
+    <th>Club</th>
+    <th>Added by user</th>
   </tr>
   {% for c in courses %}
   <tr>
     <td>{{ c.name }}</td>
     <td>{{ c.par }}</td>
+    <td>{{ c.club_name }}</td>
+    <td><a href="{{ url_for('profile', username=c.username) }}"> {{ c.username }} </a></td>
     <td>
-      <a href="/delete_course/{{ c.id }}">Delete course</a>
-      <a href="/edit_course/{{ c.id }}">Edit course</a>
-      <a href="/add_round/{{ c.id }}">Add round</a>
+      <div class="actions">
+        <a href="/delete_course/{{ c.id }}">Delete</a>
+        <a href="/edit_course/{{ c.id }}">Edit</a>
+        <a href="/add_round/{{ c.id }}">Add round</a>
+      </div>
     </td>
   </tr>
   {% endfor %}

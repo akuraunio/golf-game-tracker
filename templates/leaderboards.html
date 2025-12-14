@@ -11,18 +11,14 @@ users %}
   </tr>
   {% for u in users %}
   <tr>
-    <td>{% if loop.index == 1 %} 
-      🏆 
-      {% elif loop.index == 2 %}
-      🥈
-      {% elif loop.index == 3 %}
-      🥉
-      {% else %}
-      {{ loop.index }}
-    {% endif %}
+    <td>
+      {% if loop.index == 1 %} 🏆 {% elif loop.index == 2 %} 🥈 {% elif loop.index == 3 %} 🥉 {%
+      else %} {{ loop.index }} {% endif %}
     </td>
-      
-    <td>{{ u.username }}</td>
+
+    <td>
+      <a href="{{ url_for('profile', username=u.username) }}"> {{ u.username }} </a>
+    </td>
     <td>{{ u.handicap }}</td>
     <td>{{ u.rounds_played }}</td>
     <td>{{ u.last_active }}</td>

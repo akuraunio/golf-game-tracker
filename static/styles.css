@@ -41,3 +41,9 @@ table {
   display: grid;
   grid-template-columns: max-content;
 }
+
+.actions {
+  display: flex;
+  white-space: nowrap;
+  gap: 5px;
+}
