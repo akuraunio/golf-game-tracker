@@ -5,14 +5,20 @@
 <details>
   <summary>Update profile</summary>
   <form action="/update_profile" method="post">
-    <label
-      >Your golf club<br />
-      <input type="text" name="club" value="{{ club }}" /> </label
-    ><br /><br />
-    <label
-      >Your favorite course<br />
-      <input type="text" name="favorite_course" value="{{ favorite_course }}" /> </label
-    ><br /><br />
+    <p>
+      <label for="club">Your golf club</label><br />
+      <input id="club" type="text" name="club" value="{{ club }}" />
+    </p>
+
+    <p>
+      <label for="favorite_course">Your favorite course</label><br />
+      <input
+        id="favorite_course"
+        type="text"
+        name="favorite_course"
+        value="{{ favorite_course }}" />
+    </p>
+
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <button type="submit">Save</button>
   </form>

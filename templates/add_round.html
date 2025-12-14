@@ -4,27 +4,27 @@
 <form action="/add_round/{{ course_id }}" method="post">
   <input type="hidden" name="course_id" value="{{ course_id }}" />
   <p>
-    Date: <br />
-    <input type="date" name="played_date" required />
+    <label for="played_date">Date:</label><br />
+    <input id="played_date" type="date" name="played_date" required />
   </p>
   <p>
-    Tee: <br />
-    <select name="tee" required>
+    <label for="tee">Tee:</label><br />
+    <select id="tee" name="tee" required>
       <option value="White">White</option>
       <option value="Yellow">Yellow</option>
       <option value="Red">Red</option>
     </select>
   </p>
   <p>
-    Holes: <br />
-    <select name="holes" required>
+    <label for="holes">Holes:</label><br />
+    <select id="holes" name="holes" required>
       <option value="18">18</option>
       <option value="9">9</option>
     </select>
   </p>
   <p>
-    Strokes: <br />
-    <input type="number" name="strokes" required />
+    <label for="strokes">Strokes:</label><br />
+    <input id="strokes" type="number" name="strokes" required min="1" />
   </p>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Submit round" />

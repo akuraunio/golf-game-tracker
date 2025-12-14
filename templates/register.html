@@ -16,25 +16,25 @@
     <h1>Create a username and password to register</h1>
     <form action="/create_user" method="post">
       <p>
-        Username: * <br />
-        <input type="text" name="username" required />
+        <label for="username">Username: *</label><br />
+        <input id="username" type="text" name="username" required />
       </p>
       <p>
-        Password: * <br />
-        <input type="password" name="password1" required />
+        <label for="password1">Password: *</label><br />
+        <input id="password1" type="password" name="password1" required />
       </p>
       <p>
-        Retype password: * <br />
-        <input type="password" name="password2" required />
+        <label for="password2">Retype password: *</label><br />
+        <input id="password2" type="password" name="password2" required />
       </p>
-      <label
-        >Your golf club<br />
-        <input type="text" name="club" /> </label
-      ><br /><br />
-      <label
-        >Your favorite course<br />
-        <input type="text" name="favorite_course" /> </label
-      ><br /><br />
+      <p>
+        <label for="club">Your golf club</label><br />
+        <input id="club" type="text" name="club" />
+      </p>
+      <p>
+        <label for="favorite_course">Your favorite course</label><br />
+        <input id="favorite_course" type="text" name="favorite_course" />
+      </p>
       <input type="submit" value="Create account" />
     </form>
   </body>
