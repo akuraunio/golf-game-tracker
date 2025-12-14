@@ -73,7 +73,7 @@ JOIN clubs ON users.club_id = clubs.id (duplicate-code)
 Your code has been rated at 8.13/10 (previous run: 8.23/10, -0.09)
 ```
 
-## Why were these warnings not fixex
+## Why were these warnings not fixed
 
 - C0114, C0116: No mention about addressing these in course material or in the example app
 - R1705: I did not understand why this is a problem, could save some indentation space but does not seem critical
